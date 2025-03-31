@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
@@ -12,15 +12,15 @@ import { HousingLocation } from '../housing-location';
   template: `
   <section>
     <form action="">
-      <input type="text" placeholder="Filter by city" #filter>
-      <button class="primary" type="button" (click)="filterResult(filter.value)">Search</button>
+      <input type="text" placeholder="Filter by city" #filter (keydown.enter)="$event.preventDefault(); filterResult(filter.value)">
+      <button class="primary" type="button" (click)="filterResult(filter.value)" (disabled)="filter.value == ''">Search</button>
     </form>
   </section>
+
   <section class="results">
     <app-housing-location
     *ngFor="let housingLocation of filteredHousingLocationList"
     [housingLocationInput]="housingLocation">
-  
   </app-housing-location>
   </section>
   `,
@@ -32,10 +32,9 @@ export class HomeComponent {
   filteredHousingLocationList: HousingLocation[] = this.housingLocationList
   housingService: HousingService = inject(HousingService)
 
-
   filterResult(text: string) {
     console.log(text)
-    if(text==="") {
+    if (text === "") {
       this.filteredHousingLocationList = this.housingLocationList
     }
     else {
@@ -49,6 +48,6 @@ export class HomeComponent {
       this.filterResult("")
     })
   }
-  
+
 }
 
