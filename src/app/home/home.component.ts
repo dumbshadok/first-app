@@ -12,16 +12,19 @@ import { HousingLocation } from '../housing-location';
   template: `
   <section>
     <form action="">
-      <input type="text" placeholder="Filter by city" #filter (keydown.enter)="$event.preventDefault(); filterResult(filter.value)">
-      <button class="primary" type="button" (click)="filterResult(filter.value)" (disabled)="filter.value == ''">Search</button>
+      <input name="searchbar" type="text" placeholder="Filter by city" #filter (keydown.enter)="$event.preventDefault(); filterResult(filter.value)">
+      <button class="primary" type="button" (click)="filterResult(filter.value)" (disabled)="filter.value == ''">Search <i></i></button>
     </form>
   </section>
 
   <section class="results">
-    <app-housing-location
+    <h2  *ngIf="filteredHousingLocationList.length==0; else results" >No home corresponding</h2>
+    <ng-template #results>
+      <app-housing-location
     *ngFor="let housingLocation of filteredHousingLocationList"
     [housingLocationInput]="housingLocation">
-  </app-housing-location>
+    </app-housing-location>
+    </ng-template>
   </section>
   `,
   styleUrls: [`./home.component.css`],
@@ -38,8 +41,13 @@ export class HomeComponent {
       this.filteredHousingLocationList = this.housingLocationList
     }
     else {
-      this.filteredHousingLocationList = this.housingLocationList.filter(location => location.city.toLowerCase().includes(text.toLowerCase()))
+      this.filteredHousingLocationList = this.housingLocationList.filter(location =>
+    
+        Object.values(location).slice(1, 4).toString().toLowerCase().includes(text.toLowerCase())
+    )
+    
     }
+    console.log(this.filteredHousingLocationList)
   }
 
   constructor() {
