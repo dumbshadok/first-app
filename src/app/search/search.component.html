@@ -1,0 +1,40 @@
+<form [formGroup]="filterForm" (submit)="search()">
+    <label for="name">name:</label>
+    <input id=name type="text" name="name" formControlName="name">
+    <br>
+    <label for="city">city:</label>
+    <input type="text" name="city" list="cities" formControlName="city">
+    <datalist id="cities">
+        <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+    </datalist>
+    <br>
+    <label for="state">state:</label>
+    <input id="state" name="state" type="text" list="states" formControlName="state">
+    <datalist id="states">
+        <option *ngFor="let state of states" [value]="state">{{ state }}</option>"
+    </datalist>
+    <br>
+    <label for="units">units availables:</label>
+    <input type="number" name="units" min="0" formControlName="availableUnits">
+
+    <br>
+    <fieldset>
+        <legend>chose your wifi preferences:</legend>
+        <label for="wifi-true">with</label>
+        <input name="wifi" id="wifi-true" type="radio" value="true" formControlName="wifi"/>
+        <label for="wifi-false">without</label>
+        <input type="radio" id="wifi-false" name="wifi" value="false" formControlName="wifi" />
+        <label type="radio" for="wifi-neutral">undiferent</label>
+        <input type="radio" id="wifi-neutral" name="wifi" value="null" formControlName="wifi" checked/>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend>see houses:</legend>
+        <input id="with-laundry" name="laundry" type="checkbox" formControlName="laundry" value="true" checked>
+        <label for="with-laundry">with laundry</label>
+        <input id="without-laundry" name="laundry" type="checkbox" formControlName="laundry" value="false" checked>
+        <label for="without-laundry">without laundry</label>
+    </fieldset>
+
+    <button type="submit">submit</button>
+</form>

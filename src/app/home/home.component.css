@@ -14,6 +14,14 @@
     display: inline-block;
     width: 30%;
   }
+
+  .icon {
+    border: solid 1px var(--primary-color);
+    padding: 10px;
+    border-radius: 8px;
+    vertical-align:bottom;
+  }
+
   button {
     padding: 10px;
     border: solid 1px var(--primary-color);
@@ -21,6 +29,10 @@
     color: white;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  button:has( + .icon) {
+    margin-right: 4px;
   }
   
   @media (min-width: 500px) and (max-width: 768px) {
