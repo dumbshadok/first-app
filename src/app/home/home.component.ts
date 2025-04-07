@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
-import { FormControl, FormGroup } from '@angular/forms';
 
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
 import { HousingService } from '../housing.service';
@@ -21,7 +20,7 @@ import { SearchComponent } from '../search/search.component';
     </form>
   </section>
   <section *ngIf="expanded">
-    <app-search></app-search>
+    <app-search (searchOutput)="handleSearchResult($event)"></app-search>
   </section>
 
   <section class="results">
@@ -38,13 +37,12 @@ import { SearchComponent } from '../search/search.component';
 })
 export class HomeComponent {
 
+  searchResult: HousingLocation[] = []
   expanded = false
   housingLocationList: HousingLocation[] = []
   filteredHousingLocationList: HousingLocation[] = this.housingLocationList
   housingService: HousingService = inject(HousingService)
   cities: Set<string> | undefined
-
-
 
   filterResult(text: string) {
     console.log(text)
@@ -52,16 +50,22 @@ export class HomeComponent {
       this.filteredHousingLocationList = this.housingLocationList
     }
     else {
-
       const homeAttributes = ['id', 'name', 'city', 'state', 'photo', 'availableUnits', 'wifi', 'laundry']
-      
-      this.filteredHousingLocationList = this.housingLocationList.filter(location =>      
-        Object.values(location).at(homeAttributes.indexOf("name")).toString().toLowerCase().includes(text.toLowerCase())
-    )
-    
+      this.filteredHousingLocationList = this.housingLocationList.filter(location =>
+        Object.values(location).at(homeAttributes.indexOf("name")).toString().toLowerCase().includes(text.toLowerCase()) ||
+        Object.values(location).at(homeAttributes.indexOf("city")).toString().toLowerCase().includes(text.toLowerCase()) ||
+        Object.values(location).at(homeAttributes.indexOf("state")).toString().toLowerCase().includes(text.toLowerCase())
+      )
     }
-    console.log(this.filteredHousingLocationList)
   }
+
+  handleSearchResult(data: HousingLocation[]) {
+    this.searchResult = data
+    console.log(this.searchResult)
+    this.filteredHousingLocationList = this.searchResult
+
+  }
+
 
   constructor() {
     this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
